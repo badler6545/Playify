@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+
+    android:paddingTop="10dp"
+    android:layout_height="match_parent">
+
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="My Music"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragmentMain"
+            android:name="badler.com.playify2.MainActivityFragment" tools:layout="@layout/fragment_main"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_below="@+id/buttonlayout" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:id="@+id/imageButton"
+            android:src="@drawable/search"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"
+            android:layout_alignParentStart="true" />
+
+        <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="130dp"
+            android:background="#FFFFFF"
+            android:numColumns="3"
+            android:id="@+id/gridView"
+            android:paddingBottom="0dp"
+            android:layout_below="@+id/recentlyAddedID"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:background="#FFFFFF"
+            android:paddingTop="25dp"
+            android:text="     Recently Added"
+            android:id="@+id/recentlyAddedID"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/buttonlayout"
+            android:layout_below="@+id/gridView"
+            android:layout_alignParentStart="true">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Songs"
+                android:textColor="#FFFFFF"
+                android:id="@+id/button"
+                android:background="#e91e63"
+                 />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Albums"
+                android:textColor="#FFFFFF"
+                android:id="@+id/button2"
+                android:background="#e91e63"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Artists"
+                android:textColor="#FFFFFF"
+                android:id="@+id/button3"
+                android:background="#e91e63"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Playlists"
+                android:textColor="#FFFFFF"
+                android:id="@+id/button5"
+                android:background="#e91e63"
+                />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
