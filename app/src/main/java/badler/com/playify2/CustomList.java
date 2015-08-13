@@ -32,6 +32,10 @@ public class CustomList extends BaseAdapter{
         // TODO Auto-generated method stub
         return result.length;
     }
+    public void loadMore()
+    {
+
+    }
 
     @Override
     public Object getItem(int position) {
@@ -62,10 +66,11 @@ public class CustomList extends BaseAdapter{
 
 
             holder.tv.setText(result[position]);
-            holder.img.setImageBitmap(imageId[position]);
+
+                holder.img.setImageBitmap(imageId[position]);
 
 
-        rowView.setOnClickListener(new OnClickListener() {
+        /*rowView.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -73,7 +78,7 @@ public class CustomList extends BaseAdapter{
                 Toast.makeText(context, "You Clicked " + result[position], Toast.LENGTH_LONG).show();
             }
 
-        });
+        });*/
 
 
         return rowView;
