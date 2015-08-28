@@ -1,7 +1,11 @@
 package badler.com.playify2;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ContentUris;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -47,20 +53,31 @@ public class MainActivity extends Activity {
     private ListView songListView;
     private ArrayList<FileDescriptor> fdArr;
     private ArrayList<Uri> uriArr;
+    private boolean playingMusic;
     private int tracker;
     int mLastFirstVisibleItem;
     int mLastVisibleItemCount;
-
+    Button songButton = (Button) findViewById(R.id.songButton);
+    Button albumButton = (Button) findViewById(R.id.albumButton);
+    Button artistButton = (Button) findViewById(R.id.artistButton);
+    Button playlistButton = (Button) findViewById(R.id.playlistButton);
+    Button playButton = (Button) findViewById(R.id.playbutton);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FrameLayout frame = new FrameLayout(this);
+
         bitmapArr = new ArrayList<Bitmap>();
         fdArr = new ArrayList<FileDescriptor>();
         bitmapArrFull = new ArrayList<Bitmap>();
         uriArr=new ArrayList<Uri>();
         // = new ArrayList<String>();
+
+
+
+
 
         mostPlayed = (GridView) findViewById(R.id.gridView);
         songListView = (ListView) findViewById(R.id.songListView);
@@ -80,14 +97,9 @@ public class MainActivity extends Activity {
         Log.d("ringtone", "playSong :: " + path);
         mMediaPlayer.reset();
         mMediaPlayer.setDataSource(path);
-//mMediaPlayer.setLooping(true);
         mMediaPlayer.prepare();
         mMediaPlayer.start();
         playing = true;
-        /*if(playing)
-        {
-            changePlayButton2();
-        }*/
     }
 
 
@@ -106,7 +118,7 @@ public class MainActivity extends Activity {
         smallAlbumArr[2] = albums[albums.length - 3];
 
 
-        bitmapConvert = new Bitmap[bitmapArrFull.size()];
+        bitmapConvert = new Bitmap[bitmapArrFull.size()+100];
 
         for (int x = 0; x < bitmapArrFull.size(); x++) {
             bitmapConvert[x] = bitmapArrFull.get(x);
@@ -114,6 +126,8 @@ public class MainActivity extends Activity {
         mostPlayed.setAdapter(new CustomGrid(MainActivity.this, smallArr, smallAlbumArr));
 
         songListView.setAdapter(new CustomList(MainActivity.this, bitmapConvert, songList));
+
+
         songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             //Add new on click listener
 
@@ -123,6 +137,7 @@ public class MainActivity extends Activity {
                     System.out.print("Hello!");
                     playSong(mAudioPath[arg2]);
                     tracker = arg2;
+                    playingMusic = true;
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 } catch (IllegalStateException e) {
@@ -133,7 +148,49 @@ public class MainActivity extends Activity {
             }
         });
 
+        songButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (playingMusic)
+                {
+                    mMediaPlayer.pause();
+                    changeButtonToPause();
+                    playingMusic =false;
+                }
+                else
+                {
+                    int pausePosition = mMediaPlayer.getCurrentPosition();
+                    mMediaPlayer.seekTo(pausePosition);
+                    mMediaPlayer.start();
+                    changeButtonToPlay();
+                    playingMusic=true;
+
+                }
+            }
+        });
     }
+
+
+    public void changeButtonToPause()
+    {
+
+    }
+    public void changeButtonToPlay()
+    {
+
+    }
+    /*
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragmentMain"
+            android:name="badler.com.playify2.MainActivityFragment" tools:layout="@layout/fragment_main"
+            android:layout_width="match_parent" android:layout_height="320dp"
+            android:layout_below="@+id/buttonlayout" />
+     */
 
 
 
@@ -207,6 +264,8 @@ public class MainActivity extends Activity {
                     Bitmap bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
                     bitmapArrFull.add(bm);
                 } catch (Exception e) {
+                    Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.exclamation);
+                    bitmapArrFull.add(icon);
                     e.printStackTrace();
                 }
                 i++;

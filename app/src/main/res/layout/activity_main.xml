@@ -25,11 +25,14 @@
             android:id="@+id/textView"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragmentMain"
-            android:name="badler.com.playify2.MainActivityFragment" tools:layout="@layout/fragment_main"
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:layout_below="@+id/buttonlayout" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_below="@+id/buttonlayout"
+            android:id="@+id/frameLay">
+
+        </FrameLayout>
+
 
         <ImageButton
             android:layout_width="20dp"
@@ -81,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:text="Songs"
                 android:textColor="#FFFFFF"
-                android:id="@+id/button"
+                android:id="@+id/songButton"
                 android:background="#e91e63"
                  />
 
@@ -91,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:text="Albums"
                 android:textColor="#FFFFFF"
-                android:id="@+id/button2"
+                android:id="@+id/albumButton"
                 android:background="#e91e63"
                 />
 
@@ -101,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:text="Artists"
                 android:textColor="#FFFFFF"
-                android:id="@+id/button3"
+                android:id="@+id/artistButton"
                 android:background="#e91e63"
                 />
 
@@ -111,11 +114,62 @@
                 android:layout_height="wrap_content"
                 android:text="Playlists"
                 android:textColor="#FFFFFF"
-                android:id="@+id/button5"
+                android:id="@+id/playlistButton"
                 android:background="#e91e63"
                 />
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#e91e63"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/frameLay"
+            android:layout_centerHorizontal="true">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/playbutton"
+                android:src= "@drawable/newplaybutton"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Nothing Playing"
+                android:textSize="5pt"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#FFFFFF"
+                android:layout_above="@+id/playbutton"
+                android:layout_centerHorizontal="true" />
+            <ImageButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/next"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:id="@+id/nextSongButton"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/playbutton"
+                android:layout_marginStart="24dp" />
+
+            <ImageButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/previous"
+                android:id="@+id/previousSongButton"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="23dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toStartOf="@+id/playbutton" />
+
+        </RelativeLayout>
 
 
     </RelativeLayout>
