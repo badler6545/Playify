@@ -25,14 +25,13 @@
             android:id="@+id/textView"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-        <FrameLayout
+
+        <fragment
+            android:name="badler.com.playify2.MainActivityFragment"
             android:layout_width="match_parent"
             android:layout_height="320dp"
             android:layout_below="@+id/buttonlayout"
-            android:id="@+id/frameLay">
-
-        </FrameLayout>
-
+            android:id="@+id/fragmentMain"></fragment>
 
         <ImageButton
             android:layout_width="20dp"
@@ -125,7 +124,7 @@
             android:layout_height="200dp"
             android:background="#e91e63"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/frameLay"
+            android:layout_below="@id/fragmentMain"
             android:layout_centerHorizontal="true">
 
             <ImageButton

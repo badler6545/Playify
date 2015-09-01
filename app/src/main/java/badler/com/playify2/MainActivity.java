@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.io.FileDescriptor;
@@ -57,17 +58,26 @@ public class MainActivity extends Activity {
     private int tracker;
     int mLastFirstVisibleItem;
     int mLastVisibleItemCount;
-    Button songButton = (Button) findViewById(R.id.songButton);
-    Button albumButton = (Button) findViewById(R.id.albumButton);
-    Button artistButton = (Button) findViewById(R.id.artistButton);
-    Button playlistButton = (Button) findViewById(R.id.playlistButton);
-    Button playButton = (Button) findViewById(R.id.playbutton);
 
+    Button songButton;
+    Button albumButton;
+    Button artistButton;
+    Button playlistButton;
+    ImageButton playButton;
+
+    Fragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FrameLayout frame = new FrameLayout(this);
+
+
+
+        songButton = (Button) findViewById(R.id.songButton);
+        albumButton = (Button) findViewById(R.id.albumButton);
+        artistButton = (Button) findViewById(R.id.artistButton);
+        playlistButton = (Button) findViewById(R.id.playlistButton);
+        playButton = (ImageButton) findViewById(R.id.playbutton);
 
         bitmapArr = new ArrayList<Bitmap>();
         fdArr = new ArrayList<FileDescriptor>();
@@ -123,6 +133,8 @@ public class MainActivity extends Activity {
         for (int x = 0; x < bitmapArrFull.size(); x++) {
             bitmapConvert[x] = bitmapArrFull.get(x);
         }
+
+
         mostPlayed.setAdapter(new CustomGrid(MainActivity.this, smallArr, smallAlbumArr));
 
         songListView.setAdapter(new CustomList(MainActivity.this, bitmapConvert, songList));
@@ -153,7 +165,11 @@ public class MainActivity extends Activity {
 
             }
         });
+        albumButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
+            }
+        });
         playButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (playingMusic)
@@ -253,27 +269,62 @@ public class MainActivity extends Activity {
                         .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 
                 try {
+
                     Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
                     Uri uri = ContentUris.withAppendedId(sArtworkUri, albumId);
                     uriArr.add(uri);
-                    ParcelFileDescriptor pfd = this.getContentResolver()
+
+                    /*ParcelFileDescriptor pfd = this.getContentResolver()
                             .openFileDescriptor(uri, "r");
                     FileDescriptor fd = pfd.getFileDescriptor();
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 4;
+                    //options.inJustDecodeBounds = true;
+                    options.inSampleSize = 8;
+                    //int scaleFactor = Math.min(options.outWidth/64, options.outHeight/64);
+[
+                    //options.inJustDecodeBounds=false;
+                    //options.inSampleSize=scaleFactor;
+                    //options.inPurgeable=true;
                     Bitmap bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
-                    bitmapArrFull.add(bm);
+                    bitmapArrFull.add(bm);*/
+                    new Thread(new newThread()).start();
+
+
                 } catch (Exception e) {
-                    Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.exclamation);
-                    bitmapArrFull.add(icon);
+                    uriArr.add(null);
+                    /*Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.exclamation);
+                    bitmapArrFull.add(icon);*/
                     e.printStackTrace();
                 }
                 i++;
+
             } while (mCursor.moveToNext());
         }
         mCursor.close();
 
+
         return songs;
+    }
+
+    //new thread to efficiently load bitmaps
+    class newThread implements Runnable{
+        @Override
+        public void run() {
+               try {
+                    ParcelFileDescriptor pfd = getApplicationContext().getContentResolver()
+                            .openFileDescriptor(uriArr.get(uriArr.size()-1), "r");
+                    FileDescriptor fd = pfd.getFileDescriptor();
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 8;
+                    Bitmap bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
+                    bitmapArrFull.add(bm);
+                } catch (IOException e) {
+                   Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.exclamation);
+                   bitmapArrFull.add(icon);
+                    e.printStackTrace();
+                }
+            }
+
     }
 
 }
