@@ -85,16 +85,9 @@ public class MainActivity extends Activity {
         uriArr=new ArrayList<Uri>();
         // = new ArrayList<String>();
 
-
-
-
-
         mostPlayed = (GridView) findViewById(R.id.gridView);
         songListView = (ListView) findViewById(R.id.songListView);
         setUpLayout();
-
-
-
 
     }
 
@@ -267,52 +260,40 @@ public class MainActivity extends Activity {
 
                 int duration = mCursor.getInt(mCursor
                         .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                    try {
+                        System.out.println("Hello");
 
-                try {
+                        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+                        Uri uri = ContentUris.withAppendedId(sArtworkUri, albumId);
+                        //uriArr.add(uri);
+                        new Thread(new newThread(uri)).start();
+                        Thread.sleep(3);
+                    } catch (Exception e) {
 
-                    Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-                    Uri uri = ContentUris.withAppendedId(sArtworkUri, albumId);
-                    uriArr.add(uri);
-
-                    /*ParcelFileDescriptor pfd = this.getContentResolver()
-                            .openFileDescriptor(uri, "r");
-                    FileDescriptor fd = pfd.getFileDescriptor();
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    //options.inJustDecodeBounds = true;
-                    options.inSampleSize = 8;
-                    //int scaleFactor = Math.min(options.outWidth/64, options.outHeight/64);
-[
-                    //options.inJustDecodeBounds=false;
-                    //options.inSampleSize=scaleFactor;
-                    //options.inPurgeable=true;
-                    Bitmap bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
-                    bitmapArrFull.add(bm);*/
-                    new Thread(new newThread()).start();
-
-
-                } catch (Exception e) {
-                    uriArr.add(null);
-                    /*Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.exclamation);
-                    bitmapArrFull.add(icon);*/
-                    e.printStackTrace();
-                }
+                        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.exclamation);
+                        bitmapArrFull.add(icon);
+                        //e.printStackTrace();
+                    }
                 i++;
-
             } while (mCursor.moveToNext());
         }
         mCursor.close();
-
-
         return songs;
     }
-
+     public boolean doneBool = true;
     //new thread to efficiently load bitmaps
     class newThread implements Runnable{
+        Uri uri;
+        public newThread(Uri u)
+        {
+            this.uri = u;
+        }
         @Override
         public void run() {
                try {
+                   System.out.println("Hi");
                     ParcelFileDescriptor pfd = getApplicationContext().getContentResolver()
-                            .openFileDescriptor(uriArr.get(uriArr.size()-1), "r");
+                            .openFileDescriptor(uri, "r");
                     FileDescriptor fd = pfd.getFileDescriptor();
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inSampleSize = 8;
@@ -321,10 +302,9 @@ public class MainActivity extends Activity {
                 } catch (IOException e) {
                    Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.exclamation);
                    bitmapArrFull.add(icon);
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
-
     }
 
 }
